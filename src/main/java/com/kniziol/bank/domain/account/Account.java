@@ -60,7 +60,7 @@ public class Account {
 
     private void validateIfPositiveNumber(String value){
         if  (Objects.isNull(value) || !value.matches(POSITIVE_NUMBER_REGEXP)) {
-            throw new MoneyException("Money value is not correct. Floating-point positive number ");
+            throw new MoneyException("Money value is not correct. Floating-point positive number");
         }
     }
 
