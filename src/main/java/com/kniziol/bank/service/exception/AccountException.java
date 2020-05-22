@@ -1,4 +1,4 @@
-package com.kniziol.bank.repository.exception;
+package com.kniziol.bank.service.exception;
 
 public class AccountException extends RuntimeException {
     public AccountException(String message){

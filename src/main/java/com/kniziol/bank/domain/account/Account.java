@@ -38,7 +38,7 @@ public class Account {
     }
 
     public BigDecimal getBalance(){
-        return balance.value();
+        return new BigDecimal(balance.value().toString());
     }
 
     public List<BigDecimal> getAccountHistory(){
