@@ -13,7 +13,7 @@ public class Account {
 
     private static final String POSITIVE_NUMBER_REGEXP = "\\d+(\\.\\d+)?";
 
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private Balance balance = new Balance(new BigDecimal("0"));
@@ -29,14 +29,6 @@ public class Account {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public BigDecimal getBalance(){
         return new BigDecimal(balance.value().toString());
     }
@@ -48,7 +40,7 @@ public class Account {
     public void increaseBalance(String value){
         BigDecimal money = convertToNumber(value);
         this.balance = balance.add(money);
-        updateHistory(money.negate());
+        updateHistory(money);
     }
 
     public void decreaseBalance(String value){
@@ -67,9 +59,21 @@ public class Account {
     }
 
     private void validateIfPositiveNumber(String value){
-        if  (Objects.isNull(value) || value.matches(POSITIVE_NUMBER_REGEXP)) {
+        if  (Objects.isNull(value) || !value.matches(POSITIVE_NUMBER_REGEXP)) {
             throw new MoneyException("Money value is not correct. Floating-point positive number ");
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.intValue();
+    }
 }
