@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Repository
 public interface AccountRepository {
 
-    Long createAccount(Account account);
+    Long createAccount(String firstName, String lastName);
     Account findAccountById(Long id);
 
 

@@ -45,13 +45,13 @@ public class Account {
         return Collections.unmodifiableList(history);
     }
 
-    public void increaseAccount(String value){
+    public void increaseBalance(String value){
         BigDecimal money = convertToNumber(value);
         this.balance = balance.add(money);
         updateHistory(money.negate());
     }
 
-    public void decreaseAccount(String value){
+    public void decreaseBalance(String value){
         BigDecimal money = convertToNumber(value);
         this.balance = balance.subtract(money);
         updateHistory(money.negate());
@@ -71,4 +71,5 @@ public class Account {
             throw new MoneyException("Money value is not correct. Floating-point positive number ");
         }
     }
+
 }
