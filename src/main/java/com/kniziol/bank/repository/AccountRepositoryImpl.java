@@ -16,7 +16,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public Long createAccount(String firstName, String lastName) {
         Account account = new Account(accountId.getAndIncrement(), firstName, lastName);
-        return accountsData.put(account.getId(), account).getId();
+        accountsData.put(account.getId(), account);
+        return account.getId();
     }
 
     @Override
