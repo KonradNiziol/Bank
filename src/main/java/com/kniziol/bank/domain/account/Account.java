@@ -39,14 +39,18 @@ public class Account {
 
     public void increaseBalance(String value){
         BigDecimal money = convertToNumber(value);
-        this.balance = balance.add(money);
-        updateHistory(money);
+        synchronized (Account.class){
+            this.balance = balance.add(money);
+            updateHistory(money);
+        }
     }
 
     public void decreaseBalance(String value){
         BigDecimal money = convertToNumber(value);
-        this.balance = balance.subtract(money);
-        updateHistory(money.negate());
+        synchronized (Account.class){
+            this.balance = balance.subtract(money);
+            updateHistory(money.negate());
+        }
     }
 
     private void updateHistory(BigDecimal value){
