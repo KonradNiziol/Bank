@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseData<T> {
     private T data;
-    private String error = "";
+    private String error;
 }
