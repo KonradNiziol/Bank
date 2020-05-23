@@ -2,9 +2,10 @@ package com.kniziol.bank.service;
 
 import com.kniziol.bank.domain.account.Account;
 import com.kniziol.bank.repository.AccountRepository;
-import com.kniziol.bank.service.exception.AccountException;
+import com.kniziol.bank.service.exception.AccountCreateException;
 import com.kniziol.bank.service.dto.CreateAccountDto;
 import com.kniziol.bank.service.dto.TransferMoneyDto;
+import com.kniziol.bank.service.exception.AccountNotFoundException;
 import com.kniziol.bank.service.exception.TransferMoneyException;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -24,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Long createAccount(CreateAccountDto createAccountDto) {
         checkIfAccountIsCorrect(createAccountDto);
-        return accountRepository.createAccount(createAccountDto.firstName(), createAccountDto.lastName());
+        return accountRepository.createAccount(createAccountDto.getFirstName(), createAccountDto.getLastName());
     }
 
     @Override
@@ -37,21 +38,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void transferMoneyToTheAccount(TransferMoneyDto transferMoneyDto) {
         checkIfTransferMoneyDtoIsCorrect(transferMoneyDto);
-        Account account = getAccountFromEnteredId(transferMoneyDto.accountId());
-        account.increaseBalance(transferMoneyDto.money());
+        Account account = getAccountFromEnteredId(transferMoneyDto.getAccountId());
+        account.increaseBalance(transferMoneyDto.getMoney());
     }
 
     @Override
     public void withdrawMoneyFromAccount(TransferMoneyDto transferMoneyDto) {
         checkIfTransferMoneyDtoIsCorrect(transferMoneyDto);
-        Account account = getAccountFromEnteredId(transferMoneyDto.accountId());
-        account.decreaseBalance(transferMoneyDto.money());
+        Account account = getAccountFromEnteredId(transferMoneyDto.getAccountId());
+        account.decreaseBalance(transferMoneyDto.getMoney());
 
     }
 
     private Account getAccountFromEnteredId(Long id){
         Account accountById = accountRepository.findAccountById(id);
-        checkIfAccountExist(accountById, id);
+        checkIfAccountExist(accountById);
         return accountById;
     }
 
@@ -61,28 +62,28 @@ public class AccountServiceImpl implements AccountService {
                 .toString();
     }
 
-    private void checkIfAccountExist(Account account, Long enteredAccountId){
+    private void checkIfAccountExist(Account account){
         if (Objects.isNull(account)){
-            throw new AccountException(String.format("Account with selected id: %s does't exist", enteredAccountId));
+            throw new AccountNotFoundException("account.notFound");
         }
     }
 
     private void checkIfAccountIdCorrect(Long accountId){
         if (Objects.isNull(accountId) || accountId.compareTo(0L) != 1){
-            throw new AccountException("Provided the wrong account number, natural number greater than zero");
+            throw new AccountNotFoundException("accountId.nullOrIncorrect");
         }
     }
 
     private void checkIfAccountIsCorrect(CreateAccountDto createAccountDto){
-        if (Objects.isNull(createAccountDto) || Strings.isBlank(createAccountDto.firstName()) || Strings.isBlank(createAccountDto.lastName())){
-            throw new AccountException("In created account First Name and Last Name can't be empty");
+        if (Objects.isNull(createAccountDto) || Strings.isBlank(createAccountDto.getFirstName()) || Strings.isBlank(createAccountDto.getLastName())){
+            throw new AccountCreateException("accountCreate.nullOrEmpty");
         }
     }
 
     private void checkIfTransferMoneyDtoIsCorrect(TransferMoneyDto transferMoneyDto){
         if (Objects.isNull(transferMoneyDto)){
-            throw new TransferMoneyException("Transfer object is not present");
+            throw new TransferMoneyException("account.transferEmpty");
         }
-        checkIfAccountIdCorrect(transferMoneyDto.accountId());
+        checkIfAccountIdCorrect(transferMoneyDto.getAccountId());
     }
 }

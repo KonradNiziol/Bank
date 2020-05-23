@@ -1,4 +1,18 @@
 package com.kniziol.bank.service.dto;
 
-public record TransferMoneyDto(Long accountId, String money) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TransferMoneyDto {
+
+    private Long accountId;
+    private String money;
+
 }

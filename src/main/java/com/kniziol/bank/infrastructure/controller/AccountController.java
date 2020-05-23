@@ -4,7 +4,6 @@ import com.kniziol.bank.infrastructure.data.ResponseData;
 import com.kniziol.bank.service.AccountService;
 import com.kniziol.bank.service.dto.CreateAccountDto;
 import com.kniziol.bank.service.dto.TransferMoneyDto;
-import com.kniziol.bank.service.exception.TransferMoneyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -25,7 +25,7 @@ public class Account {
         this.lastName = lastName;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
